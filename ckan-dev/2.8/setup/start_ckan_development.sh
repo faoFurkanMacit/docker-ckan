@@ -77,5 +77,9 @@ fi
 # Start supervisord
 supervisord --configuration /etc/supervisord.conf &
 
+##
+pip install debugpy
+sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 /usr/bin/paster serve --reload $CKAN_INI
+
 # Start the development server with automatic reload
-sudo -u ckan -EH paster serve --reload $CKAN_INI
+#sudo -u ckan -EH paster serve --reload $CKAN_INI
