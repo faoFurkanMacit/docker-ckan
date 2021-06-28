@@ -77,5 +77,10 @@ fi
 # Start supervisord
 supervisord --configuration /etc/supervisord.conf &
 
+
+##
+pip install debugpy
+sudo -u ckan -EH /usr/bin/python3 -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 /usr/bin/ckan -c $CKAN_INI run -H 0.0.0.0 -r
+
 # Start the development server with automatic reload
-sudo -u ckan -EH ckan -c $CKAN_INI run -H 0.0.0.0
+# sudo -u ckan -EH ckan -c $CKAN_INI run -H 0.0.0.0

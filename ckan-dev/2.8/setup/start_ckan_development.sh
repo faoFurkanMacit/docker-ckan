@@ -38,6 +38,14 @@ do
             echo "Updating \`test.ini\` reference to \`test-core.ini\` for plugin $i"
             paster --plugin=ckan config-tool $i/test.ini "use = config:../../src/ckan/test-core.ini"
         fi
+
+        if [ -f $i/setup.sh ];
+        then
+            cd $i
+            echo "Found setup.sh file in $i"
+            . ./setup.sh
+            cd $APP_DIR
+        fi
     fi
 done
 
