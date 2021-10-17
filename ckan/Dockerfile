@@ -1,4 +1,4 @@
-FROM openknowledge/ckan-base:2.9
+FROM openknowledge/ckan-dev:2.8
 
 MAINTAINER Your Name Here <you@example.com>
 
@@ -6,6 +6,8 @@ MAINTAINER Your Name Here <you@example.com>
 ARG TZ
 RUN echo $TZ > /etc/timezone
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
+
+
 
 # Install any extensions needed by your CKAN instance
 # (Make sure to add the plugins to CKAN__PLUGINS in the .env file)
@@ -16,6 +18,8 @@ RUN cp /usr/share/zoneinfo/$TZ /etc/localtime
 
 # Install the extension(s) you wrote for your own project
 # RUN pip install -e git+https://github.com/your-org/ckanext-your-extension.git@v1.0.0#egg=ckanext-your-extension
+
+COPY docker-entrypoint.d/* /docker-entrypoint.d/
 
 # Apply any patches needed to CKAN core or any of the built extensions (not the
 # runtime mounted ones)
