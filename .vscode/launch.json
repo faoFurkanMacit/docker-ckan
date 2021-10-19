@@ -24,6 +24,57 @@
                     "remoteRoot": "/srv/app/src_extensions/"
                 }
             ]
+        },
+        {
+            "name": "1_HARVESTER_GATHER",
+            "type": "python",
+            "request": "attach",
+            "jinja": false,
+            "port": 5677,
+            "host": "localhost",
+            "justMyCode": false,
+            "logToFile": false,
+            "showReturnValue": true,
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/src/",
+                    "remoteRoot": "/srv/app/src_extensions/"
+                }
+            ]
+        },
+        {
+            "name": "2_HARVESTER_FETCH",
+            "type": "python",
+            "request": "attach",
+            "jinja": false,
+            "port": 5676,
+            "host": "localhost",
+            "justMyCode": false,
+            "logToFile": false,
+            "showReturnValue": true,
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/src/",
+                    "remoteRoot": "/srv/app/src_extensions/"
+                }
+            ]
+        },
+        {
+            "name": "3_HARVESTER_RUN",
+            "type": "python",
+            "request": "attach",
+            "jinja": false,
+            "port": 5675,
+            "host": "localhost",
+            "justMyCode": false,
+            "logToFile": false,
+            "showReturnValue": true,
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/src/",
+                    "remoteRoot": "/srv/app/src_extensions/"
+                }
+            ]
         }
     ]
 }

@@ -8,4 +8,6 @@ paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
     "ckanext.terriajs.default.title=Map" \
     "ckanext.terriajs.url=http://localhost:8080" \
     "ckanext.terriajs.schema.type_mapping=${APP_DIR}/terriajs-type-mapping.json" &&\
-cp ./type-mapping.json ${APP_DIR}/terriajs-type-mapping.json
+cp ./type-mapping.json ${APP_DIR}/terriajs-type-mapping.json &&\
+paster --plugin=ckan config-tool ${APP_DIR}/production.ini -s app:main \
+    -e "ckan.views.default_views=image_view text_view recline_view terriajs"
