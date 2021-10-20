@@ -30,7 +30,7 @@ pip install \
     six &&\
     
 paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
-    "ckan.spatial.validator.profiles=iso19193eden" &&\
+    "ckan.spatial.validator.profiles=iso19139" &&\
 paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
     "ckan.spatial.srid=4326" &&\
 paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
