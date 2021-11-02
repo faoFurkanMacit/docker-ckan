@@ -8,4 +8,8 @@ pip install .
 # ERROR: Package 'python-slugify' requires a different Python: 2.7.18 not in '>=3.6'
 pip install python-slugify==4.0.1
 
+#   The separator to use to flatten composite fields (repeating_subfields)
+paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
+    "scheming.composite.separator = |"
+
 

@@ -30,12 +30,18 @@ pip install \
     six &&\
     
 paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
-    "ckan.spatial.validator.profiles=iso19139" &&\
+    "ckan.spatial.validator.profiles=iso19139,iso19115" &&\
 paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
     "ckan.spatial.srid=4326" &&\
 paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
     "ckanext.spatial.search_backend=solr" &&\
+paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
+    "ckanext.spatial.harvest.continue_on_validation_errors=true" &&\
+paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
+    "ckanext.spatial.harvest.validate_wms=true" &&\
 paster --plugin=ckanext-spatial spatial initdb 4326 --config=$APP_DIR/production.ini
+
+#spatial_metadata spatial_query csw_harvester iso19115_harvester
 
 pip install geoalchemy2
 

@@ -18,7 +18,10 @@ paster --plugin=ckanext-harvest harvester initdb --config=${APP_DIR}/production.
 # ON CKAN >= 2.9:
 # (pyenv) $ ckan --config=/etc/ckan/default/ckan.ini harvester initdb
 
+#DEBUG
 paster --plugin=ckan config-tool ${APP_DIR}/production.ini \
     "ckan.harvest.log_scope=0"
+
+#harvest ckan_harvester 
 
 # "ckan.harvest.log_level=info"
