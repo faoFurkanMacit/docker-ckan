@@ -9,6 +9,7 @@ services:
         - TZ=${TZ}
     env_file:
       - .env
+      - .env_dev
     links:
       - db
       - solr
@@ -43,7 +44,7 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
-      - "5432:4321"
+      - "5432:5432"
 
   solr:
     container_name: solr

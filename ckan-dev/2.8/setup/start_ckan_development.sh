@@ -77,9 +77,45 @@ fi
 # Start supervisord
 supervisord --configuration /etc/supervisord.conf &
 
-##
-pip install debugpy
-sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 /usr/bin/paster serve --reload $CKAN_INI
 
-# Start the development server with automatic reload
-#sudo -u ckan -EH paster serve --reload $CKAN_INI
+if [[ -n "$UNIT_TEST" ]]
+then 
+    echo "[START_CKAN_DEVELOPMENT] UNIT_TEST SET" 
+    echo "[START_CKAN_DEVELOPMENT] Set CKAN_SQLALCHEMY_URL to $TEST_CKAN_SQLALCHEMY_URL"
+    export CKAN_SQLALCHEMY_URL=$TEST_CKAN_SQLALCHEMY_URL
+
+    pip install --upgrade --no-cache-dir -r src/ckan/dev-requirements.txt 
+    pip install --upgrade --no-cache-dir pytest-ckan 
+
+    for PLUGIN in $UNIT_TEST_PLUGINS; do
+        
+        echo "[START_CKAN_DEVELOPMENT] UNIT_TEST for plugin $PLUGIN"
+        PYTEST_COMMAND="/usr/bin/pytest --ckan-ini=$APP_DIR/src_extensions/ckanext-$PLUGIN/test.ini $APP_DIR/src_extensions/ckanext-$PLUGIN/ckanext/$PLUGIN/tests"
+        
+        EXIT_CODE=$?
+        if [ $EXIT_CODE != 0 ]; then 
+            echo "[START_CKAN_DEVELOPMENT] ERROR: Could not configure test.ini. Check your configurations about $PLUGIN: exit code $EXIT_CODE"
+        else
+            if [[ -n "$DEBUGPY" ]]
+            then
+                pip install debugpy
+                echo "[START_CKAN_DEVELOPMENT] DEBUG SET; Starting tests in debug mode"
+                sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 $PYTEST_COMMAND
+            else
+                $PYTEST_COMMAND
+                EXIT_CODE=$?
+                if [ $EXIT_CODE != 0 ]; then 
+                    echo "[START_CKAN_DEVELOPMENT] ERROR: Something went wrong while executing tests on $PLUGIN: exit code $EXIT_CODE"
+                fi
+            fi
+        fi        
+    done 
+        
+elif [[ -n "$DEBUGPY" ]]
+then
+    echo "[START_CKAN_DEVELOPMENT] DEBUG SET; Starting CKAN in debug mode"
+    pip install debugpy
+    sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 /usr/bin/paster serve --reload $CKAN_INI
+else
+    sudo -u ckan -EH paster serve --reload $CKAN_INI
+fi
