@@ -56,7 +56,10 @@ To develop local extensions use the `docker-compose.dev.yml` file:
 
 To build the images:
 
-	docker-compose -f docker-compose.dev.yml build
+    cd ckan-dev
+    docker build -t local.registry/ckan-dev:2.8 -f 2.8/Dockerfile .
+    cd ..
+    docker-compose -f docker-compose.dev.yml build
 
 To start the containers:
 
@@ -78,13 +81,10 @@ From CKAN 2.9 onwards, the `paster` command used for common CKAN administration 
 The new extension will be created in the `src/` folder. You might need to change the owner of its folder to have the appropiate permissions.
 
 
-### Running the debugger (pdb / ipdb)
+### Running the debugger (pydebug)
 
-To run a container and be able to add a breakpoint with `pdb` or `ipdb`, run the `ckan-dev` container with the `--service-ports` option:
-
-    docker-compose -f docker-compose.dev.yml run --service-ports ckan-dev
-
-This will start a new container, displaying the standard output in your terminal. If you add a breakpoint in a source file in the `src` folder (`import pdb; pdb.set_trace()`) you will be able to inspect it in this terminal next time the code is executed.
+Both CKAN and unit tests can be debugged. 
+To start in debug mode, set the variable DEBUGPY in .env_dev
 
 
 ## CKAN images
@@ -97,11 +97,11 @@ This will start a new container, displaying the standard output in your terminal
     +-----------+-------------+                +----------+
                 |
                 |
-    +-----------v------------+                 +----------+
-    |                        |                 |          |
-    | openknowledge/ckan-dev +----------------->   ckan   | (development)
-    |                        |                 |          |
-    +------------------------+                 +----------+
+    +-----------v-------------+                 +----------+
+    |                         |                 |          |
+    | local.registry/ckan-dev +----------------->   ckan   | (development)
+    |                         |                 |          |
+    +-------------------------+                 +----------+
 
 
 ```
@@ -109,7 +109,7 @@ This will start a new container, displaying the standard output in your terminal
 The Docker images used to build your CKAN project are located in the `ckan/` folder. There are two Docker files:
 
 * `Dockerfile`: this is based on `openknowledge/ckan-base` (with the `Dockerfile` on the `/ckan-base/<version>` folder), an image with CKAN with all its dependencies, properly configured and running on [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/) (production setup)
-* `Dockerfile.dev`: this is based on `openknowledge/ckan-dev` (with the `Dockerfile` on the `/ckan-dev/<version>` folder), wich extends `openknowledge/ckan-base` to include:
+* `Dockerfile.dev`: this is based on `local.registry/ckan-dev` (with the `Dockerfile` on the `/ckan-dev/<version>` folder), wich extends `openknowledge/ckan-base` to include:
 
   * Any extension cloned on the `src` folder will be installed in the CKAN container when booting up Docker Compose (`docker-compose up`). This includes installing any requirements listed in a `requirements.txt` (or `pip-requirements.txt`) file and running `python setup.py develop`.
   * The CKAN image used will development requirements needed to run the tests .
@@ -177,9 +177,19 @@ ckan
 ```
 
 
-## Known Issues
+## Run tests
 
-* Running the tests: Running the tests for CKAN or an extension inside the container will delete your current database. We need to patch CKAN core in our image to work around that.
+To run unit test for a plugin or a list of plugins, set in .env_dev:
+
+UNIT_TEST=TRUE 
+UNIT_TEST_PLUGINS=plugin1 plugin2
+
+Then restart docker compose. 
+
+## Known issues
+
+When running CKAN after running the tests, the interface could show the packages created during the tests. 
+**Solution**: Remove SOLR container and volume and restart its service.
 
 
 # License
