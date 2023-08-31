@@ -1,7 +1,7 @@
 FROM ckan/ckan-base:2.10.1-dev
 #FROM ckan/ckan-base:2.9.9-dev
 
-
+WORKDIR /srv/app
 # Set up environment variables
 ENV APP_DIR=/srv/app
 ENV TZ=UTC
@@ -22,6 +22,10 @@ RUN if ! [ /usr/share/zoneinfo/${TZ} -ef /etc/localtime ]; then \
 #
 # For instance:
 #
+RUN pip3 install debugpy
+COPY setup/start_ckan_development.sh ${APP_DIR}/start_ckan_development.sh
+RUN chown -R ckan.ckan /srv/app/src_extensions
+
 ### XLoader ###
 #RUN pip3 install -e 'git+https://github.com/ckan/ckanext-xloader.git@master#egg=ckanext-xloader' && \ 
 #    pip3 install -r ${APP_DIR}/src/ckanext-xloader/requirements.txt && \

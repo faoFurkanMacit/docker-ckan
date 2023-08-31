@@ -51,7 +51,8 @@ then
     # Start supervisord
     supervisord --configuration /etc/supervisord.conf &
     # Start uwsgi
-    sudo -u ckan -EH uwsgi $UWSGI_OPTS
+    # sudo -u ckan -EH uwsgi $UWSGI_OPTS
+    sudo -u ckan -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 -EH uwsgi $UWSGI_OPTS
 else
   echo "[prerun] failed...not starting CKAN."
 fi

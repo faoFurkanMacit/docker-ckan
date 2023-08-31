@@ -4,6 +4,7 @@ volumes:
   ckan_storage:
   pg_data:
   solr_data:
+  src:
 
 services:
 
@@ -25,6 +26,10 @@ services:
         condition: service_healthy
     ports:
       - "0.0.0.0:${CKAN_PORT_HOST}:${CKAN_PORT}"
+      - "0.0.0.0:5678:5678"
+      - "0.0.0.0:5677:5677"
+      - "0.0.0.0:5676:5676"
+      - "0.0.0.0:5675:5675"
     volumes:
       - ckan_storage:/var/lib/ckan
       - ./src:/srv/app/src_extensions
@@ -46,6 +51,8 @@ services:
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
+
+      
       - POSTGRES_DB
       - CKAN_DB_USER
       - CKAN_DB_PASSWORD
