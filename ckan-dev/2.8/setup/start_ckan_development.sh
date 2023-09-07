@@ -100,7 +100,8 @@ then
             then
                 pip install debugpy
                 echo "[START_CKAN_DEVELOPMENT] DEBUG SET; Starting tests in debug mode"
-                sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 $PYTEST_COMMAND
+                #sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 $PYTEST_COMMAND
+                sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --listen 0.0.0.0:5678 $PYTEST_COMMAND
             else
                 $PYTEST_COMMAND
                 EXIT_CODE=$?
@@ -115,7 +116,8 @@ elif [[ -n "$DEBUGPY" ]]
 then
     echo "[START_CKAN_DEVELOPMENT] DEBUG SET; Starting CKAN in debug mode"
     pip install debugpy
-    sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 /usr/bin/paster serve --reload $CKAN_INI
+    sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --listen 0.0.0.0:5678 /usr/bin/paster serve --reload $CKAN_INI
+    #sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 /usr/bin/paster serve --reload $CKAN_INI
 else
     sudo -u ckan -EH paster serve --reload $CKAN_INI
 fi

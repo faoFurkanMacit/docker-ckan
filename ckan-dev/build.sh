@@ -1,1 +1,1 @@
-docker build -t openknowledge/ckan-dev:2.8 -f 2.8/Dockerfile .
+docker build -t local.registry/ckan-dev:2.8.12 -f 2.8/Dockerfile .

@@ -1,4 +1,4 @@
-FROM local.registry/ckan-dev:2.8
+FROM local.registry/ckan-dev:2.8.12
 
 MAINTAINER Your Name Here <you@example.com>
 
