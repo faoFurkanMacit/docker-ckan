@@ -1,10 +1,9 @@
 #!/bin/bash
-
+. ${APP_DIR}/bin/activate
 # Install any local extensions in the src_extensions volume
 echo "Looking for local extensions to install..."
 echo "Extension dir contents:"
-ls -la $SRC_EXTENSIONS_DIR
-for i in $SRC_EXTENSIONS_DIR/*
+for i in $SRC_EXTENSIONS_DIR/*;
 do
     if [ -d $i ];
     then
@@ -41,17 +40,19 @@ do
     fi
 done
 
+cd $APP_DIR
+
 # Set debug to true
 echo "Enabling debug mode"
 paster --plugin=ckan config-tool $CKAN_INI -s DEFAULT "debug = true"
-
+#/usr/lib/ckan/default/bin/paster --plugin=ckan user list -c /etc/ckan/default/development.ini
 # Update the plugins setting in the ini file with the values defined in the env var
 echo "Loading the following plugins: $CKAN__PLUGINS"
 paster --plugin=ckan config-tool $CKAN_INI "ckan.plugins = $CKAN__PLUGINS"
 
 # Update test-core.ini DB, SOLR & Redis settings
 echo "Loading test settings into test-core.ini"
-paster --plugin=ckan config-tool $SRC_DIR/ckan/test-core.ini \
+paster --plugin=ckan config-tool $APP_DIR/src/ckan/test-core.ini \
     "sqlalchemy.url = $TEST_CKAN_SQLALCHEMY_URL" \
     "ckan.datastore.write_url = $TEST_CKAN_DATASTORE_WRITE_URL" \
     "ckan.datastore.read_url = $TEST_CKAN_DATASTORE_READ_URL" \
@@ -59,8 +60,8 @@ paster --plugin=ckan config-tool $SRC_DIR/ckan/test-core.ini \
     "ckan.redis.url = $TEST_CKAN_REDIS_URL"
 
 # Run the prerun script to init CKAN and create the default admin user
-sudo -u ckan -EH python prerun.py
-
+#sudo -u ckan -EH python prerun.py
+src/ckan/contrib/docker/ckan-entrypoint.sh
 # Run any startup scripts provided by images extending this one
 if [[ -d "/docker-entrypoint.d" ]]
 then
@@ -75,7 +76,7 @@ then
 fi
 
 # Start supervisord
-supervisord --configuration /etc/supervisord.conf &
+#supervisord --configuration /etc/supervisord.conf &
 
 
 if [[ -n "$UNIT_TEST" ]]
@@ -101,7 +102,8 @@ then
                 pip install debugpy
                 echo "[START_CKAN_DEVELOPMENT] DEBUG SET; Starting tests in debug mode"
                 #sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 $PYTEST_COMMAND
-                sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --listen 0.0.0.0:5678 $PYTEST_COMMAND
+                #sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --listen 0.0.0.0:5678 $PYTEST_COMMAND
+                /usr/bin/python -m debugpy --log-to-stderr --listen 0.0.0.0:5678 $PYTEST_COMMAND
             else
                 $PYTEST_COMMAND
                 EXIT_CODE=$?
@@ -116,8 +118,10 @@ elif [[ -n "$DEBUGPY" ]]
 then
     echo "[START_CKAN_DEVELOPMENT] DEBUG SET; Starting CKAN in debug mode"
     pip install debugpy
-    # sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --listen 0.0.0.0:5678 /usr/bin/paster serve --reload $CKAN_INI
-    sudo -u ckan -EH /usr/bin/python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 /usr/bin/paster serve --reload $CKAN_INI
+    #sudo -u ckan -EH python -m debugpy --log-to-stderr --listen 0.0.0.0:5678 paster serve --reload $CKAN_INI
+    python -m debugpy --log-to-stderr --listen 0.0.0.0:5678 $APP_DIR/bin/paster serve --reload $CKAN_INI
+    #sudo -u ckan -EH python -m debugpy --log-to-stderr --wait-for-client --listen 0.0.0.0:5678 paster serve --reload $CKAN_INI
 else
-    sudo -u ckan -EH paster serve --reload $CKAN_INI
+    #sudo -u ckan -EH paster serve --reload $CKAN_INI
+    paster serve --reload $CKAN_INI
 fi

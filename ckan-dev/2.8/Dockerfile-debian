@@ -1,0 +1,36 @@
+#FROM openknowledge/ckan-base:2.8.12
+FROM local.registry/ckan-base:2.8.6
+
+MAINTAINER Open Knowledge International <info@okfn.org>
+
+ENV APP_DIR=/usr/lib/ckan/venv
+ENV SRC_EXTENSIONS_DIR=${APP_DIR}/src_extensions
+ENV GIT_BRANCH=2.8
+ENV CKAN_INI=/etc/ckan/production.ini
+# Install packages needed by the dev requirements
+USER root 
+#RUN apt update
+#RUN apt install -y libffi-dev
+
+COPY 2.8/setup/start_ckan_development.sh ${APP_DIR}/bin/ 
+ENV CMD_PATH="${APP_DIR}/bin/start_ckan_development.sh"
+#RUN chmod +x ${CMD_PATH}
+RUN chown -R ckan:ckan ${APP_DIR}
+#RUN chown -R ckan:ckan ${SRC_EXTENSIONS_DIR}
+RUN chown ckan:ckan ${CMD_PATH}
+RUN chown ckan:ckan ${CKAN_INI}
+
+USER ckan
+# Install CKAN dev requirements
+ENV PATH="$PATH:$APP_DIR/bin"
+RUN . ${APP_DIR}/bin/activate
+#RUN pip install --no-binary :all: -r https://raw.githubusercontent.com/ckan/ckan/${GIT_BRANCH}/dev-requirements.txt
+COPY dev-requirements.txt ${APP_DIR}
+RUN pip install -r ${APP_DIR}/dev-requirements.txt
+
+# Create folder for local extensions sources
+RUN mkdir $SRC_EXTENSIONS_DIR
+
+CMD ${CMD_PATH}
+
+
