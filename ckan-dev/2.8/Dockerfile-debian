@@ -16,7 +16,7 @@ COPY 2.8/setup/start_ckan_development.sh ${APP_DIR}/bin/
 ENV CMD_PATH="${APP_DIR}/bin/start_ckan_development.sh"
 #RUN chmod +x ${CMD_PATH}
 RUN chown -R ckan:ckan ${APP_DIR}
-RUN chown -R ckan:ckan ${SRC_EXTENSIONS_DIR}
+#RUN chown -R ckan:ckan ${SRC_EXTENSIONS_DIR}
 RUN chown ckan:ckan ${CMD_PATH}
 RUN chown ckan:ckan ${CKAN_INI}
 
@@ -31,12 +31,6 @@ RUN pip install -r ${APP_DIR}/dev-requirements.txt
 # Create folder for local extensions sources
 RUN mkdir $SRC_EXTENSIONS_DIR
 
-#CMD sh ${CMD_PATH}
-
 CMD ${CMD_PATH}
-
-#CMD sleep 1000000
-
-#CMD bash ${CMD_PATH}
 
 
