@@ -1,4 +1,5 @@
-FROM openknowledge/ckan-base:2.8.12
+#FROM openknowledge/ckan-base:2.8.12
+FROM local.registry/ckan-base:2.8.1
 
 MAINTAINER Open Knowledge International <info@okfn.org>
 

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 cd ${APP_DIR}/src_extensions/fao-maps-ckan-authentication/ &&\
 pip install -r requirements.txt &&\
 paster --plugin=ckan config-tool ${APP_DIR}/production.ini -s app:main \

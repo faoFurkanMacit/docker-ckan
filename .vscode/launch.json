@@ -9,20 +9,29 @@
             "name": "Python: Remote Attach",
             "type": "python",
             "request": "attach",
-            "jinja": true,
+            "jinja": true,  
             "port": 5678,
             "host": "localhost",
-            "justMyCode": true,
-            "logToFile": false,
+            "justMyCode": false,
+            "console": "integratedTerminal",
+            "logToFile": true,
             "showReturnValue": true,
+            "stopOnEntry" : false,
+            "workingDirectory": "${workspaceFolder}\\src",
+            "cwd": "${workspaceFolder}\\src",
+            "sudo": true,
+            "sourceMap": {
+                "${cwd}": "${workspaceFolder}"
+            },
             "pathMappings": [
-                // {
+                //{
                 //     "localRoot": "${workspaceFolder}",
-                //     "remoteRoot": "/srv/app/src"
+                //     "remoteRoot": "/usr/lib/ckan/venv/"
                 // },
                 {
-                    "localRoot": "${workspaceFolder}/src/",
-                    "remoteRoot": "/srv/app/src_extensions/"
+
+                    "localRoot": "${workspaceFolder}\\src",
+                    "remoteRoot": "/usr/lib/ckan/venv/src_extensions/"
                 }
             ]
         },

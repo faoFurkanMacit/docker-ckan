@@ -1,5 +1,7 @@
 .env
+
 src/*
+!src/ckan/*
 
 .pyc
 .pyo
