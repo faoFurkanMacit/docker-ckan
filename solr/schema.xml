@@ -158,18 +158,7 @@ schema. In this case the version should be set to the next CKAN version number.
     <dynamicField name="res_extras_*" type="text" indexed="true" stored="true" multiValued="true"/>
     <dynamicField name="vocab_*" type="string" indexed="true" stored="true" multiValued="true"/>
     <dynamicField name="*" type="string" indexed="true"  stored="false"/>
-<field name="res_ids" type="string" indexed="true" stored="true" multiValued="true"/>
-<field name="res_jsonschemas" type="text" indexed="true" stored="true" multiValued="true"/>
-<field name="res_jsonschema_types" type="string" indexed="true" stored="true" multiValued="true"/>
-<field name="view_ids" type="string" indexed="true" stored="true" multiValued="true"/>
-<field name="view_types" type="string" indexed="true" stored="true" multiValued="true"/>
-<field name="view_jsonschema_types" type="string" indexed="true" stored="true" multiValued="true" />
-<field name="view_jsonschemas" type="text" indexed="true" stored="true" multiValued="true" />
-<field name="bbox_area" type="float" indexed="true" stored="true" />
-<field name="maxx" type="float" indexed="true" stored="true" />
-<field name="maxy" type="float" indexed="true" stored="true" />
-<field name="minx" type="float" indexed="true" stored="true" />
-<field name="miny" type="float" indexed="true" stored="true" />	
+
 </fields>
 
 <uniqueKey>index_id</uniqueKey>
