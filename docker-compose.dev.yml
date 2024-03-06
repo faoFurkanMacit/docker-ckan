@@ -22,7 +22,7 @@ services:
       - "0.0.0.0:5676:5676"
       - "0.0.0.0:5675:5675"
     volumes:
-      - ./src:/srv/app/src_extensions
+      - ./src:${APP_DIR}/src_extensions
       - ckan_storage:/var/lib/ckan
     
 
