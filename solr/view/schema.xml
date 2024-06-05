@@ -78,31 +78,34 @@ schema. In this case the version should be set to the next CKAN version number.
     <fields>
         <field name="indexed_ts" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
         <field name="index_id" type="string" indexed="true" stored="true" required="true" />
+        <!--<field name="revision_id" type="string" indexed="true" stored="true" required="true" /> -->
         <field name="site_id" type="string" indexed="true" stored="true" required="true" />
         <field name="_version_" type="string" indexed="true" stored="true"/>
 
         <!-- <field name="pkg_status" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="res_status" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="status" type="string" indexed="true" stored="true" multiValued="false"/> -->
-        <field name="pkg_capacity" type="string" indexed="true" stored="true" multiValued="false"/>
 
         <field name="capabilities" type="string" indexed="true" stored="true" multiValued="true"/>
         <field name="text" type="text" indexed="true" stored="false" multiValued="true"/>
+        <field name="urls" type="text" indexed="true" stored="false" multiValued="true"/>
+
+        <field name="capacity" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="permission_labels" type="string" indexed="true" stored="false" multiValued="true"/>
-        <dynamicField name="*" type="textgen" indexed="true"  stored="false"/>
+        <dynamicField name="*" type="text" indexed="true"  stored="false"/>
 
         <field name="org_id" type="string" indexed="true" stored="true" multiValued="false"/>
-        <field name="org_name" type="textgen" indexed="true" stored="true" multiValued="false"/>
+        <field name="org_name" type="text" indexed="true" stored="true" multiValued="false"/>
         <field name="pkg_id" type="string" indexed="true" stored="true" omitNorms="false"/>
         <field name="pkg_tags" type="string" indexed="true" stored="true" multiValued="true"/>
-        <field name="pkg_name" type="textgen" indexed="true" stored="true" multiValued="false"/>
-        <field name="pkg_title" type="textgen" indexed="true" stored="true" multiValued="false"/>
-        <field name="pkg_description" type="textgen" indexed="true" stored="true" multiValued="false"/>
+        <field name="pkg_name" type="text" indexed="true" stored="true" multiValued="false"/>
+        <field name="pkg_title" type="text" indexed="true" stored="true" multiValued="false"/>
+        <field name="pkg_description" type="text" indexed="true" stored="true" multiValued="false"/>
         <field name="res_id" type="string" indexed="true" stored="true" multiValued="false"/>
-        <field name="res_type" type="textgen" indexed="true" stored="true" multiValued="false"/>
-        <field name="res_name" type="textgen" indexed="true" stored="true" multiValued="false" />
-        <field name="res_description" type="textgen" indexed="true" stored="true" multiValued="false"/>
-        <field name="res_format" type="textgen" indexed="true" stored="true" multiValued="false"/>
+        <field name="res_type" type="text" indexed="true" stored="true" multiValued="false"/>
+        <field name="res_name" type="text" indexed="true" stored="true" multiValued="false" />
+        <field name="res_description" type="text" indexed="true" stored="true" multiValued="false"/>
+        <field name="res_format" type="text" indexed="true" stored="true" multiValued="false"/>
         <field name="res_url" type="string" indexed="true" stored="true" multiValued="false"/>
         <!-- <field name="res_jsonschema_opt" type="text" indexed="true" stored="true" multiValued="false"/>
         <field name="res_jsonschema_body" type="text" indexed="true" stored="true" multiValued="false"/>
@@ -110,14 +113,14 @@ schema. In this case the version should be set to the next CKAN version number.
         <field name="id" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="type" type="string" indexed="true" stored="true" multiValued="false"/>
         <field name="name" type="string" indexed="true" stored="true" multiValued="false"/>
-        <field name="title" type="textgen" indexed="true" stored="true" multiValued="false"/>
-        <field name="description" type="textgen" indexed="true" stored="true" multiValued="false"/>
+        <field name="title" type="text" indexed="true" stored="true" multiValued="false"/>
+        <field name="description" type="text" indexed="true" stored="true" multiValued="false"/>
 
-        <field name="pkg_jsonschema_type" type="textgen" indexed="true" stored="true" multiValued="false" />
-        <field name="res_jsonschema_type" type="textgen" indexed="true" stored="true" multiValued="false" />
-        <field name="jsonschema_type" type="textgen" indexed="true" stored="true" multiValued="false" />
-        <field name="jsonschema_body" type="textgen" indexed="true" stored="true" multiValued="false" />
-        <field name="jsonschema_opt" type="textgen" indexed="true" stored="true" multiValued="false" />
+        <field name="pkg_jsonschema_type" type="text" indexed="true" stored="true" multiValued="false" />
+        <field name="res_jsonschema_type" type="text" indexed="true" stored="true" multiValued="false" />
+        <field name="jsonschema_type" type="text" indexed="true" stored="true" multiValued="false" />
+        <field name="jsonschema_body" type="text" indexed="true" stored="true" multiValued="false" />
+        <field name="jsonschema_opt" type="text" indexed="true" stored="true" multiValued="false" />
     </fields>
     <uniqueKey>index_id</uniqueKey>
     <defaultSearchField>text</defaultSearchField>
@@ -128,8 +131,8 @@ schema. In this case the version should be set to the next CKAN version number.
     <copyField source="org_name" dest="text"/>
 
     <copyField source="pkg_id" dest="text"/>
-    <copyField source="pkg_tags" dest="text"/>
     <copyField source="pkg_name" dest="text"/>
+    <copyField source="pkg_tags" dest="text"/>
     <copyField source="pkg_title" dest="text"/>
     <copyField source="pkg_description" dest="text"/>
 
@@ -138,7 +141,7 @@ schema. In this case the version should be set to the next CKAN version number.
     <copyField source="res_name" dest="text"/>
     <copyField source="res_description" dest="text"/>
     <copyField source="res_format" dest="text"/>
-    <copyField source="res_url" dest="text"/>
+    <copyField source="res_url" dest="urls"/>
 
     <copyField source="id" dest="text"/>
     <copyField source="type" dest="text"/>
