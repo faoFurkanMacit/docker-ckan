@@ -63,7 +63,6 @@ RUN echo name=$SOLR_CORE_PACKAGE > /opt/solr/server/solr/$SOLR_CORE_PACKAGE/core
 # Giving ownership to Solr
 RUN chown -R $SOLR_USER:$SOLR_USER /opt/solr/server/solr/$SOLR_CORE_PACKAGE
 
-##############################################################################
 
 ENV SOLR_CORE_VIEW ckan_views
 # Adjust to your needs
